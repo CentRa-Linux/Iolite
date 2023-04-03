@@ -1,0 +1,34 @@
+configname: "fallback"
+version: 1.0
+
+widgets:
+  - name: "panel"
+    size: 48
+    length: 100
+    direction: 0
+    # 0→bottom 1→top 2→left 3→right
+    allocate-space: true
+    container-names: ["row"]
+    row:
+      - name: "button-with-window"
+        direction: 0
+        # 0→left-bottom 1→left-top 2→right-bottom 3→right-top
+        animation: 2
+        # 0→disabled 1→enable y animation 2→enable x animation
+        width: 400
+        height: 700
+        iconname: "go-up"
+        container-names: ["row"]
+        row:
+          - name: "application-launcher-desktop"
+      - name: "button-with-window"
+        direction: 0
+        # 0→left-bottom 1→left-top 2→right-bottom 3→right-top
+        animation: 2
+        # 0→disabled 1→enable y animation 2→enable x animation
+        width: 400
+        height: 700
+        iconname: "go-next"
+      - name: "spacer"
+      - name: "simple-clock"
+        format: "+%H:%M:%S"
