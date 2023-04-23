@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import sys
 import importlib
 import yaml
@@ -29,35 +30,45 @@ def construct(input, engine, app, instances, parent=None, container_name=""):
     module = importlib.import_module("plugins." + input["name"] + ".widget")
     instance = module.Widget()
     if parent != None:
-        instance.create(engine, props, app, parent.obj.findChild(
-            QObject, container_name))
+        instance.create(
+            engine, props, app, parent.obj.findChild(QObject, container_name)
+        )
         instance.obj.setParent(parent.obj.findChild(QObject, container_name))
-        parent.obj.findChild(
-            QObject, container_name).children().append(instance.obj)
+        parent.obj.findChild(QObject, container_name).children().append(instance.obj)
     else:
         instance.create(engine, props, app)
     instances.append(instance)
 
     if "container-names" in input:
-        print("container widget:" +
-              input["name"] + " container_name:" + container_name)
+        print("container widget:" + input["name"] + " container_name:" + container_name)
         for containername in input["container-names"]:
             if containername in input:
                 for widget in input[containername]:
-                    instances = construct(widget, engine,
-                                          app, instances, instance, container_name=containername)
+                    instances = construct(
+                        widget,
+                        engine,
+                        app,
+                        instances,
+                        instance,
+                        container_name=containername,
+                    )
             else:
                 print("Error: container doesn't exist despite container name declared!")
                 sys.exit(1)
     else:
-        print("non-container widget:" +
-              input["name"] + " container_name:" + container_name)
+        print(
+            "non-container widget:"
+            + input["name"]
+            + " container_name:"
+            + container_name
+        )
     return instances
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
+    engine.addImportPath("themes")
     instances = []
     try:
         with open(sys.argv[1]) as file:

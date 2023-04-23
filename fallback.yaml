@@ -18,6 +18,7 @@ widgets:
         width: 400
         height: 700
         iconname: "go-up"
+        layoutType: 0
         container-names: ["row"]
         row:
           - name: "application-launcher-desktop"
@@ -29,6 +30,7 @@ widgets:
         width: 400
         height: 700
         iconname: "go-next"
+        layoutType: 0
       - name: "spacer"
       - name: "simple-clock"
         format: "+%H:%M:%S"

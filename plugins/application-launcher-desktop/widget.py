@@ -12,12 +12,12 @@ class Widget:
         self.obj = QQuickItem()
 
     def create(self, engine, props, app, parent=None):
-        self.component = QQmlComponent(engine, QUrl(
-            "plugins/application-launcher-desktop/widget.qml"))
+        self.component = QQmlComponent(
+            engine, QUrl("plugins/application-launcher-desktop/widget.qml")
+        )
         if not self.component.isReady():
             for error in self.component.errors():
                 print(error.toString())
-        self.obj = self.component.createWithInitialProperties(
-            {"parent": parent})
+        self.obj = self.component.createWithInitialProperties({"parent": parent})
 
         return 0
