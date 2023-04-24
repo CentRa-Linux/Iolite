@@ -1,0 +1,3 @@
+*.qml~
+__pycache__
+*.pyc

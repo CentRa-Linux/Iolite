@@ -15,14 +15,13 @@ class Widget:
         self.obj = QQuickItem()
 
     def create(self, engine, props, app, parent=None):
-        self.component = QQmlComponent(engine, QUrl(
-            "plugins/simple-clock/clock.qml"))
+        self.component = QQmlComponent(engine, QUrl("plugins/simple-clock/clock.qml"))
         if not self.component.isReady():
             for error in self.component.errors():
                 print(error.toString())
         self.format = props["format"] if "format" in props else ""
-        self.obj = self.component.createWithInitialProperties(
-            {"parent": parent})
+        self.obj = self.component.createWithInitialProperties({"parent": parent})
+        self.component.destroyed.connect(self.timer.stop())
 
         # ここからtimer定義
         self.timer.timeout.connect(self.time_update)
@@ -32,7 +31,7 @@ class Widget:
         return 0
 
     def time_update(self):
-        timedate = subprocess.check_output(
-            ["date", self.format]).decode('utf-8').rstrip()
-        self.obj.setProperty(
-            "timedate", timedate)
+        timedate = (
+            subprocess.check_output(["date", self.format]).decode("utf-8").rstrip()
+        )
+        self.obj.setProperty("timedate", timedate)

@@ -3,6 +3,7 @@ import os
 import sys
 import importlib
 import yaml
+import signal
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQuick import QQuickItem
 from PySide2.QtQml import QQmlApplicationEngine, QQmlEngine
@@ -75,6 +76,7 @@ if __name__ == "__main__":
             input = yaml.safe_load(file)
             for widget in input["widgets"]:
                 instances = construct(widget, engine, app, instances)
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
         sys.exit(app.exec_())
     except Exception as e:
         print("Exception occured while loading YAML:", file=sys.stderr)

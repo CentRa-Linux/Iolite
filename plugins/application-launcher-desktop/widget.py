@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import subprocess
+import core.appModel
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQuick import QQuickItem
 from PySide2.QtQml import QQmlApplicationEngine, QQmlComponent
@@ -18,6 +19,9 @@ class Widget:
         if not self.component.isReady():
             for error in self.component.errors():
                 print(error.toString())
-        self.obj = self.component.createWithInitialProperties({"parent": parent})
+        AppModel = core.appModel.AppModel()
+        self.obj = self.component.createWithInitialProperties(
+            {"parent": parent, "appModel": AppModel}
+        )
 
         return 0

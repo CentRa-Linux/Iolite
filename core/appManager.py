@@ -24,9 +24,8 @@ class appManager():
             files = [f for f in files if os.path.isfile(path+'/'+f)]
             for file in files:
                 if getext(file) != ".desktop":
-                    return
-                else:
-                    self.apps[path+'/'+file] = self.parse(path+'/'+file)
+                    continue
+                self.apps[path+'/'+file] = self.parse(path+'/'+file)
 
     def parse(self, path):
         app = []
@@ -94,6 +93,7 @@ class appManager():
         for path in paths:
             observer.schedule(EventHandler(), path, recursive=True)
         observer.start()
+        print("started!")
 
 if __name__ == "__main__":
     instance = appManager()
