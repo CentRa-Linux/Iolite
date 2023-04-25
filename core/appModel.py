@@ -82,7 +82,6 @@ class AppModel(QAbstractListModel):
         self.instance.start(paths)
         self.apps = self.instance.apps
         self.count = len(self.apps)
-        print(self.index(0, 2))
 
     def index(self, row, column, parent=QModelIndex()):
         return self.createIndex(row, column, None)

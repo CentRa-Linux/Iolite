@@ -37,8 +37,6 @@ Item {
 
                     objectName: "repeater"
                     model: widget.appModel
-                    onModelChanged: console.error("error")
-                    Component.onCompleted: console.error(widget.appModel.get(0)["Icon"])
 
                     Button {
                         icon.name: Icon
@@ -50,7 +48,6 @@ Item {
                         display: AbstractButton.TextUnderIcon
                         width: 100
                         height: 100
-                        Component.onCompleted: print(index)
                     }
 
                 }

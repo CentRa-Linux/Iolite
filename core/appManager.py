@@ -30,7 +30,6 @@ class appManager:
     message = Message()
 
     def rescan(self, paths):
-        print("rescan!!")
         for path in paths:
             files = os.listdir(path)
             files = [f for f in files if os.path.isfile(path + "/" + f)]
@@ -126,7 +125,7 @@ class appManager:
         for path in paths:
             observer.schedule(EventHandler(), path, recursive=True)
         observer.start()
-        print("started!")
+        print("watchdog started!")
 
 
 if __name__ == "__main__":
