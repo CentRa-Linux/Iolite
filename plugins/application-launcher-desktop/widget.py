@@ -5,10 +5,12 @@ import core.appModel
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQuick import QQuickItem
 from PySide2.QtQml import QQmlApplicationEngine, QQmlComponent
-from PySide2.QtCore import QUrl, QObject, QTimer
+from PySide2.QtCore import QUrl, QObject, QTimer, QModelIndex, Qt
 
 
 class Widget:
+    AppModel = core.appModel.AppModel()
+
     def __init__(self) -> None:
         self.obj = QQuickItem()
 
@@ -19,9 +21,8 @@ class Widget:
         if not self.component.isReady():
             for error in self.component.errors():
                 print(error.toString())
-        AppModel = core.appModel.AppModel()
         self.obj = self.component.createWithInitialProperties(
-            {"parent": parent, "appModel": AppModel}
+            {"parent": parent, "appModel": self.AppModel}
         )
 
         return 0

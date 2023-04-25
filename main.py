@@ -4,6 +4,7 @@ import sys
 import importlib
 import yaml
 import signal
+import time
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQuick import QQuickItem
 from PySide2.QtQml import QQmlApplicationEngine, QQmlEngine
