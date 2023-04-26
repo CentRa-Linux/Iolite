@@ -9,6 +9,8 @@ Item {
 
     property var appModel
 
+    signal launch(string e)
+
     Layout.minimumWidth: 200
     Layout.fillWidth: true
     height: parent.height
@@ -48,6 +50,7 @@ Item {
                         display: AbstractButton.TextUnderIcon
                         width: 100
                         height: 100
+                        onClicked: widget.launch(Exec)
                     }
 
                 }

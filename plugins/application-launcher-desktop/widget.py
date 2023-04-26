@@ -14,6 +14,16 @@ class Widget:
     def __init__(self) -> None:
         self.obj = QQuickItem()
 
+    def launch(self, e):
+        subprocess.Popen(
+            e.replace("%u", "").replace("%U", ""),
+            shell=True,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            close_fds=True,
+        )
+
     def create(self, engine, props, app, parent=None):
         self.component = QQmlComponent(
             engine, QUrl("plugins/application-launcher-desktop/widget.qml")
@@ -24,5 +34,6 @@ class Widget:
         self.obj = self.component.createWithInitialProperties(
             {"parent": parent, "appModel": self.AppModel}
         )
+        self.obj.launch.connect(self.launch)
 
         return 0
