@@ -31,40 +31,78 @@ class Widget:
 
         # create strut
         display = Display()
-        root = display.screen(0)['root']
-        window = display.create_resource_object(
-            "window", self.obj.winId())
+        root = display.screen(0)["root"]
+        window = display.create_resource_object("window", self.obj.winId())
         if allocate_space:
-            strut = (0, 0, 0, size) if direction == 0 else (0, 0, size, 0) if direction == 1 else (
-                size, 0, 0, 0) if direction == 2 else (0, size, 0, 0) if direction == 3 else (0, 0, 0, 0)
-            window.change_property(display.get_atom(
-                "_NET_WM_STRUT"), Xatom.CARDINAL, 32, strut, X.PropModeReplace)
-        window.change_property(display.get_atom("_NET_WM_STATE"), Xatom.ATOM, 32, [
-                               display.get_atom("_NET_WM_STATE_SKIP_TASKBAR")], X.PropModeAppend)
-        window.change_property(display.get_atom("_NET_WM_STATE"), Xatom.ATOM, 32, [
-                               display.get_atom("_NET_WM_STATE_SKIP_PAGER")], X.PropModeAppend)
-        window.change_property(display.get_atom("_NET_WM_STATE"), Xatom.ATOM, 32, [
-                               display.get_atom("_NET_WM_STATE_SKIP_SWITCHER")], X.PropModeAppend)
-        window.change_property(display.get_atom(
-            "_NET_WM_WINDOW_TYPE"), Xatom.ATOM, 32, [display.get_atom("_NET_WM_WINDOW_TYPE_DOCK")], X.PropModePrepend)
+            strut = (
+                (0, 0, 0, size)
+                if direction == 0
+                else (0, 0, size, 0)
+                if direction == 1
+                else (size, 0, 0, 0)
+                if direction == 2
+                else (0, size, 0, 0)
+                if direction == 3
+                else (0, 0, 0, 0)
+            )
+            window.change_property(
+                display.get_atom("_NET_WM_STRUT"),
+                Xatom.CARDINAL,
+                32,
+                strut,
+                X.PropModeReplace,
+            )
+        window.change_property(
+            display.get_atom("_NET_WM_STATE"),
+            Xatom.ATOM,
+            32,
+            [display.get_atom("_NET_WM_STATE_SKIP_TASKBAR")],
+            X.PropModeAppend,
+        )
+        window.change_property(
+            display.get_atom("_NET_WM_STATE"),
+            Xatom.ATOM,
+            32,
+            [display.get_atom("_NET_WM_STATE_SKIP_PAGER")],
+            X.PropModeAppend,
+        )
+        window.change_property(
+            display.get_atom("_NET_WM_STATE"),
+            Xatom.ATOM,
+            32,
+            [display.get_atom("_NET_WM_STATE_SKIP_SWITCHER")],
+            X.PropModeAppend,
+        )
+        window.change_property(
+            display.get_atom("_NET_WM_WINDOW_TYPE"),
+            Xatom.ATOM,
+            32,
+            [display.get_atom("_NET_WM_WINDOW_TYPE_DOCK")],
+            X.PropModePrepend,
+        )
         desktop_request = protocol.event.ClientMessage(
-            window=window, client_type=display.get_atom("_NET_WM_DESKTOP"), data=(32, [0xFFFFFFFF, 0, 0, 0, 0]))
+            window=window,
+            client_type=display.get_atom("_NET_WM_DESKTOP"),
+            data=(32, [0xFFFFFFFF, 0, 0, 0, 0]),
+        )
         root.send_event(desktop_request, X.SubstructureNotifyMask)
 
-        y = 0 if direction == 1 or direction == 2 or direction == 3 else screen.geometry().height() - \
-            size
-        x = 0 if direction == 0 or direction == 1 or direction == 2 else screen.geometry().width() - \
-            size
+        y = (
+            0
+            if direction == 1 or direction == 2 or direction == 3
+            else screen.geometry().height() - size
+        )
+        x = (
+            0
+            if direction == 0 or direction == 1 or direction == 2
+            else screen.geometry().width() - size
+        )
         if direction == 0 or direction == 1:
-            self.obj.setProperty(
-                "width",  length / 100 * screen.geometry().width())
-            self.obj.setProperty(
-                "height",  size)
+            self.obj.setProperty("width", length / 100 * screen.geometry().width())
+            self.obj.setProperty("height", size)
         else:
-            self.obj.setProperty(
-                "width",  size)
-            self.obj.setProperty(
-                "height",  length / 100 * screen.geometry().width())
+            self.obj.setProperty("width", size)
+            self.obj.setProperty("height", length / 100 * screen.geometry().width())
         self.obj.setProperty("x", x)
         self.obj.setProperty("y", y)
         self.obj.setProperty("vertical", vertical)

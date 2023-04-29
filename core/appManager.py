@@ -29,6 +29,9 @@ class appManager:
 
     message = Message()
 
+    def sort(self):
+        self.apps = dict(sorted(self.apps.items(), key=lambda x: x[1][0]["Name"]))
+
     def rescan(self, paths):
         for path in paths:
             files = os.listdir(path)
@@ -54,7 +57,11 @@ class appManager:
                         data = {}
                     continue
                 if "=" in line:
-                    value = line.split("=")[1].rstrip()
+                    lines = line.split("=")[2:]
+                    value = line.split("=")[1]
+                    for l in lines:
+                        value += "=" + l
+                    value = value.rstrip()
                     if "[" and "]" in line:
                         key = line.split("[")[0]
                         if line.split("[")[1].split("]")[0] == locale.getlocale()[0]:
@@ -75,6 +82,7 @@ class appManager:
 
     def start(self, paths):
         self.rescan(paths)
+        self.sort()
 
         AppManagerSelf = self
 
@@ -90,6 +98,7 @@ class appManager:
                     AppManagerSelf.message.onAdded.emit(
                         list(AppManagerSelf.apps.keys()).index(e.src_path)
                     )
+                    AppManagerSelf.sort()
 
             def on_moved(self, e):
                 if e.is_directory:
@@ -103,6 +112,7 @@ class appManager:
                     AppManagerSelf.message.onAdded.emit(
                         list(AppManagerSelf.apps.keys()).index(e.dest_path)
                     )
+                    AppManagerSelf.sort()
 
             def on_deleted(self, e):
                 if e.is_directory:
@@ -111,6 +121,7 @@ class appManager:
                     index = list(AppManagerSelf.apps.keys()).index(e.src_path)
                     AppManagerSelf.apps.pop(e.src_path, [])
                     AppManagerSelf.message.onDeleted.emit(index)
+                    AppManagerSelf.sort()
 
             def on_modified(self, e):
                 if e.is_directory:
@@ -120,6 +131,7 @@ class appManager:
                     AppManagerSelf.message.onModified.emit(
                         list(AppManagerSelf.apps.keys()).index(e.src_path)
                     )
+                    AppManagerSelf.sort()
 
         observer = Observer()
         for path in paths:

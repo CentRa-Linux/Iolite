@@ -31,7 +31,7 @@ def construct(input, engine, app, instances, parent=None, container_name=""):
 
     module = importlib.import_module("plugins." + input["name"] + ".widget")
     instance = module.Widget()
-    if parent != None:
+    if parent is not None:
         instance.create(
             engine, props, app, parent.obj.findChild(QObject, container_name)
         )

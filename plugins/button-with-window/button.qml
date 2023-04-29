@@ -74,14 +74,21 @@ Item {
         onClicked: {
             if (parent.checked) {
                 parent.checked = false;
+                window.setting = false;
             } else {
                 parent.checked = true;
+                window.setting = false;
                 window.requestActivate();
             }
         }
     }
 
     Window {
+        // onActiveChanged: {
+        //     !active ? root.checked = false : root.checked = root.checked;
+        //     console.error(root.iconname + ":" + active);
+        // }
+
         id: window
 
         property int animation: 0
@@ -89,18 +96,18 @@ Item {
         property int availableGeometryX: 0
         property int availableGeometryY: 0
         property int sx: direction == 0 || direction == 1 ? availableGeometryX : availableGeometryX + Screen.desktopAvailableWidth - width
-        property int sy: direction == 1 || direction == 3 ? availableGeometryY : availableGeometryX + Screen.desktopAvailableHeight - height
+        property int sy: direction == 1 || direction == 3 ? availableGeometryY : availableGeometryY + Screen.desktopAvailableHeight - height
         property int hx: direction == 0 || direction == 1 ? -width : Screen.width
         property int hy: direction == 1 || direction == 3 ? -height : Screen.height
         property int layoutType: 0 // 0 → Row 1 → Column 2 → Grid
+        property bool setting: false
 
-        flags: Qt.Window | Qt.CustomizeWindowHint // | Qt.Tool
+        //flags: Qt.FramelessWindowHint
         x: root.checked ? sx : animation == 2 ? hx : sx
         y: root.checked ? sy : animation == 1 ? hy : sy
         color: Kirigami.Theme.backgroundColor
         objectName: "window"
-        visible: root.checked || xanimation.running || yanimation.running
-        onActiveChanged: !active ? root.checked = false : root.checked = root.checked
+        visible: (root.checked || xanimation.running || yanimation.running) && !setting
 
         RowLayout {
             id: row
@@ -132,6 +139,7 @@ Item {
 
                 duration: Kirigami.Units.shortDuration
                 easing.type: Easing.OutQuad
+                onStopped: window.setting = false
             }
 
         }
@@ -142,6 +150,7 @@ Item {
 
                 duration: Kirigami.Units.shortDuration
                 easing.type: Easing.OutQuad
+                onStopped: parent.setting = false
             }
 
         }

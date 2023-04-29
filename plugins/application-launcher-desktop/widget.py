@@ -15,6 +15,7 @@ class Widget:
         self.obj = QQuickItem()
 
     def launch(self, e):
+        print(e)
         subprocess.Popen(
             e.replace("%u", "").replace("%U", ""),
             shell=True,
