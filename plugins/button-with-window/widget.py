@@ -8,7 +8,7 @@ from PySide2.QtQml import QQmlApplicationEngine, QQmlComponent
 from PySide2.QtCore import QUrl, QObject, QTimer, Signal, Qt
 
 from Xlib.display import Display
-from Xlib import Xatom, X, protocol
+from Xlib import Xatom, X, protocol, Xutil, xobject
 
 
 class Widget:
@@ -48,7 +48,6 @@ class Widget:
 
         display = Display()
         root = display.screen(0)["root"]
-        self.lastwindow = self.obj.winId()
         window = display.create_resource_object("window", self.obj.winId())
         window.change_property(
             display.intern_atom("_NET_WM_WINDOW_TYPE"),
@@ -57,14 +56,67 @@ class Widget:
             [display.intern_atom("_NET_WM_WINDOW_TYPE_DOCK")],
             X.PropModeReplace,
         )
-        window.get_full_property(
-            display.intern_atom("_NET_WM_WINDOW_TYPE_DOCK"), Xatom.ATOM
-        )
+        display.flush()
 
+        self.obj.visibleChanged.connect(self.show, Qt.QueuedConnection)
+        self.show()
+
+        self.lastwindow = self.obj.winId()
         pool = concurrent.futures.ThreadPoolExecutor()
         pool.submit(self.observeActiveWindow)
 
         return 0
+
+    def show(self):
+        if self.obj.isVisible() == False:
+            return
+        display = Display()
+        root = display.screen(0)["root"]
+        window = display.create_resource_object("window", self.obj.winId())
+
+        # Needed to get frameless window
+        value = b"\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+
+        window.change_property(
+            display.intern_atom("_MOTIF_WM_HINTS"),
+            display.intern_atom("_MOTIF_WM_HINTS"),
+            32,
+            value,
+            X.PropModeReplace,
+            onerror=None,
+        )
+        display.flush()
+
+        window.change_property(
+            display.intern_atom("_NET_WM_STATE"),
+            Xatom.ATOM,
+            32,
+            [display.intern_atom("_NET_WM_STATE_ABOVE")],
+            X.PropModeReplace,
+        )
+        window.change_property(
+            display.intern_atom("_NET_WM_STATE"),
+            Xatom.ATOM,
+            32,
+            [display.intern_atom("_NET_WM_STATE_FOCUSED")],
+            X.PropModeAppend,
+        )
+        window.change_property(
+            display.intern_atom("_NET_WM_STATE"),
+            Xatom.ATOM,
+            32,
+            [display.intern_atom("_NET_WM_STATE_SKIP_TASKBAR")],
+            X.PropModeAppend,
+        )
+        display.flush()
+        window.change_property(
+            display.intern_atom("_NET_WM_STATE"),
+            Xatom.ATOM,
+            32,
+            [display.intern_atom("_NET_WM_STATE_SKIP_PAGER")],
+            X.PropModeAppend,
+        )
+        display.flush()
 
     def hide(self):
         self.button.setProperty("checked", False)
@@ -74,13 +126,6 @@ class Widget:
             return
         display = Display()
         root = display.screen(0)["root"]
-        window = display.create_resource_object(
-            "window",
-            root.get_full_property(
-                display.intern_atom("_NET_ACTIVE_WINDOW"), Xatom.WINDOW
-            ).value[0],
-        )
-        window.change_attributes(event_mask=X.PropertyChangeMask)
         if event.atom == display.intern_atom("_NET_ACTIVE_WINDOW"):
             if (
                 root.get_full_property(

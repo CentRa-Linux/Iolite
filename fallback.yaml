@@ -13,7 +13,7 @@ widgets:
       - name: "button-with-window"
         direction: 0
         # 0→left-bottom 1→left-top 2→right-bottom 3→right-top
-        animation: 2
+        animation: 1
         # 0→disabled 1→enable y animation 2→enable x animation
         width: 400
         height: 700

@@ -109,6 +109,14 @@ Item {
         objectName: "window"
         visible: (root.checked || xanimation.running || yanimation.running) && !setting
 
+        MouseArea {
+            id: overlay
+
+            z: 999
+            enabled: xanimation.running || yanimation.running
+            anchors.fill: parent
+        }
+
         RowLayout {
             id: row
 
