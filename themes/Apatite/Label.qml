@@ -4,6 +4,11 @@ import QtQuick.Templates 2.15 as T
 T.Label {
     id: control
 
-    color: control.palette.windowText
-    linkColor: control.palette.link
+    SystemPalette {
+        id: systemPalette
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
+
+    color: systemPalette.windowText
+    linkColor: systemPalette.highlight
 }

@@ -128,7 +128,7 @@ T.SpinBox {
         implicitHeight: 30
 
         radius: 4
-        color: 'transparent'
+        color: control.button
         border.width: 1
         border.color: Apatite.pblend(systemPalette.button,
                                      systemPalette.buttonText, 0.7)

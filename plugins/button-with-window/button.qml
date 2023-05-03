@@ -3,83 +3,22 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Window 2.14
 import org.kde.kirigami 2.15 as Kirigami
+import Apatite 1.0
 
-Item {
+Button {
     id: root
 
-    property string iconname
-    property bool checked: false
-
-    width: 100
-    height: parent.height
+    implicitWidth: 100
+    implicitHeight: parent.height
+    display: AbstractButton.IconOnly
+    checkable: true
+    icon.name: ""
     onCheckedChanged: {
-        print(Screen.virtualX);
-    }
-
-    Column {
-        Rectangle {
-            id: background
-
-            color: Kirigami.Theme.highlightColor
-            opacity: mousearea.containsMouse ? mousearea.pressed ? 0.3 : 0.1 : 0
-            width: root.width
-            height: root.height - effect.height
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: Kirigami.Units.shortDuration
-                    easing.type: Easing.OutQuad
-                }
-
-            }
-
-        }
-
-        Rectangle {
-            id: effect
-
-            color: Kirigami.Theme.highlightColor
-            width: root.width
-            height: checked || mousearea.pressed ? mousearea.pressed ? 4 : 1 : 0
-
-            Behavior on height {
-                NumberAnimation {
-                    duration: Kirigami.Units.shortDuration
-                    easing.type: Easing.OutQuad
-                }
-
-            }
-
-        }
-
-    }
-
-    Kirigami.Icon {
-        id: icon
-
-        anchors.centerIn: parent
-        source: iconname
-        width: Kirigami.Units.iconSizes.smallMedium
-        height: Kirigami.Units.iconSizes.smallMedium
-        onSourceChanged: {
-            print(iconname);
-        }
-    }
-
-    MouseArea {
-        id: mousearea
-
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
-            if (parent.checked) {
-                parent.checked = false;
-                window.setting = false;
-            } else {
-                parent.checked = true;
-                window.setting = false;
-                window.requestActivate();
-            }
+        if (checked) {
+            window.setting = false;
+            window.requestActivate();
+        } else {
+            window.setting = false;
         }
     }
 

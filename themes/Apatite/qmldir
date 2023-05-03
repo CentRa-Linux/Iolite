@@ -23,3 +23,5 @@ SplitView              1.0 SplitView.qml
 Frame                  1.0 Frame.qml
 Dial                   1.0 Dial.qml
 ComboBox               1.0 ComboBox.qml
+
+IconTextField          1.0 IconTextField.qml

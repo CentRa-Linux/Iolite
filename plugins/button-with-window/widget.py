@@ -24,9 +24,10 @@ class Widget:
         if not self.component.isReady():
             for error in self.component.errors():
                 print(error.toString())
-        iconname = props["iconname"] if "iconname" in props else ""
+        iconname = props["icon.name"] if "icon.name" in props else ""
+        print(iconname)
         self.button = self.component.createWithInitialProperties(
-            {"parent": parent, "iconname": iconname}
+            {"parent": parent, "icon.name": iconname}
         )
         self.obj = self.button.findChild(QQuickWindow, "window")
 

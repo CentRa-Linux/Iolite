@@ -36,6 +36,7 @@ class AppModel(QAbstractListModel):
     CommentRole = Qt.UserRole + 4
     HiddenRole = Qt.UserRole + 5
     NoDisplayRole = Qt.UserRole + 6
+    TerminalRole = Qt.UserRole + 7
 
     count = 0
 
@@ -47,6 +48,7 @@ class AppModel(QAbstractListModel):
             Qt.UserRole + 4: b"Comment",
             Qt.UserRole + 5: b"Hidden",
             Qt.UserRole + 6: b"NoDisplay",
+            Qt.UserRole + 7: b"Terminal",
         }
 
     apps = {}
@@ -125,6 +127,15 @@ class AppModel(QAbstractListModel):
                     return (
                         True
                         if list(self.apps.values())[row][0]["NoDisplay"] == "true"
+                        else False
+                    )
+            case self.TerminalRole:
+                if "Terminal" not in list(self.apps.values())[row][0]:
+                    return False
+                else:
+                    return (
+                        True
+                        if list(self.apps.values())[row][0]["Terminal"] == "true"
                         else False
                     )
 

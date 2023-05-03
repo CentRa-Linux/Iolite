@@ -10,11 +10,6 @@ import QtQuick.Templates 2.15 as T
 import org.kde.kirigami 2.15 as Kirigami
 
 QtObject {
-
-
-    /**
-      *
-      */
     function blend(color1, color2) {
         return Qt.rgba((color1.r + color2.r) / 2, (color1.g + color2.g) / 2,
                        (color1.b + color2.b) / 2, (color1.a + color2.a) / 2)

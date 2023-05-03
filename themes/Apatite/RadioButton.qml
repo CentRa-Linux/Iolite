@@ -39,7 +39,7 @@ T.RadioButton {
             anchors.fill: parent
             anchors.margins: control.pressed ? 2 : 0
             radius: width
-            color: !control.checked ? systemPalette.window : Apatite.setAlpha(
+            color: !control.checked ? systemPalette.button : Apatite.setAlpha(
                                           systemPalette.highlight, 0.2)
             border.color: control.hovered ? systemPalette.highlight : !control.checked ? Apatite.pblend(systemPalette.button, systemPalette.buttonText, 0.7) : Apatite.pblend(systemPalette.button, systemPalette.highlight, 0.2)
 

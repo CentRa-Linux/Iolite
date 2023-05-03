@@ -44,7 +44,7 @@ T.Switch {
             anchors.margins: control.down ? 2 : 0
             color: control.checked ? Apatite.setAlpha(
                                          systemPalette.highlight,
-                                         0.2) : systemPalette.window
+                                         0.2) : systemPalette.button
             radius: 4
 
             border.color: control.hovered ? systemPalette.highlight : !control.checked ? Apatite.pblend(systemPalette.button, systemPalette.buttonText, 0.7) : Apatite.pblend(systemPalette.button, systemPalette.highlight, 0.2)

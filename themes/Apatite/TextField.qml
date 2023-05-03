@@ -15,8 +15,6 @@ T.TextField {
         colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
     }
 
-    property string source: ""
-
     implicitWidth: implicitBackgroundWidth + leftInset + rightInset || Math.max(
                        contentWidth,
                        placeholder.implicitWidth) + leftPadding + rightPadding
@@ -37,34 +35,12 @@ T.TextField {
                                          systemPalette.buttonText, 0.7)
     verticalAlignment: TextInput.AlignVCenter
 
-    Kirigami.Icon {
-        id: placeholderIcon
-        source: control.source
-        width: height
-        height: control.height - (control.topPadding + control.bottomPadding)
-        x: control.leftPadding
-        y: control.topPadding
-        opacity: !source || control.activeFocus || control.length
-                 || control.preeditText ? 0 : 1
-        color: Apatite.pblend(systemPalette.button,
-                              systemPalette.buttonText, 0.7)
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.longDuration
-                easing.type: Easing.OutQuad
-            }
-        }
-    }
-
     Text {
         id: placeholder
         property int textvisible: !control.length && !control.preeditText
                                   && (!control.activeFocus
                                       || control.horizontalAlignment !== Qt.AlignHCenter)
-        x: !source || control.activeFocus || control.length
-           || control.preeditText ? control.leftPadding : control.leftPadding
-                                    + Kirigami.Units.smallSpacing + placeholderIcon.width
+        x: control.leftPadding
         y: control.topPadding
         width: control.width - (control.leftPadding + control.rightPadding)
         height: control.height - (control.topPadding + control.bottomPadding)

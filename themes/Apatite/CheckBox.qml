@@ -43,7 +43,7 @@ T.CheckBox {
             anchors.margins: control.down ? 2 : 0
             radius: 4
 
-            color: control.checkState == Qt.Unchecked ? systemPalette.window : Apatite.setAlpha(
+            color: control.checkState == Qt.Unchecked ? systemPalette.button : Apatite.setAlpha(
                                                             systemPalette.highlight,
                                                             0.2)
             border.color: control.hovered ? systemPalette.highlight : control.checkState
