@@ -90,54 +90,53 @@ class AppModel(QAbstractListModel):
 
     def data(self, index, role: int):
         row = index.row()
-        match role:
-            case self.NameRole:
-                return list(self.apps.values())[row][0]["Name"]
-            case self.IconRole:
+        if role == self.NameRole:
+            return list(self.apps.values())[row][0]["Name"]
+        elif role == self.IconRole:
+            return (
+                list(self.apps.values())[row][0]["Icon"]
+                if "Icon" in list(self.apps.values())[row][0]
+                else ""
+            )
+        elif role == self.ExecRole:
+            return (
+                list(self.apps.values())[row][0]["Exec"]
+                if "Exec" in list(self.apps.values())[row][0]
+                else ""
+            )
+        elif role == self.CommentRole:
+            return (
+                list(self.apps.values())[row][0]["Comment"]
+                if "Comment" in list(self.apps.values())[row][0]
+                else ""
+            )
+        elif role == self.HiddenRole:
+            if "Hidden" not in list(self.apps.values())[row][0]:
+                return False
+            else:
                 return (
-                    list(self.apps.values())[row][0]["Icon"]
-                    if "Icon" in list(self.apps.values())[row][0]
-                    else ""
+                    True
+                    if list(self.apps.values())[row][0]["Hidden"] == "true"
+                    else False
                 )
-            case self.ExecRole:
+        elif role == self.NoDisplayRole:
+            if "NoDisplay" not in list(self.apps.values())[row][0]:
+                return False
+            else:
                 return (
-                    list(self.apps.values())[row][0]["Exec"]
-                    if "Exec" in list(self.apps.values())[row][0]
-                    else ""
+                    True
+                    if list(self.apps.values())[row][0]["NoDisplay"] == "true"
+                    else False
                 )
-            case self.CommentRole:
+        elif role == self.TerminalRole:
+            if "Terminal" not in list(self.apps.values())[row][0]:
+                return False
+            else:
                 return (
-                    list(self.apps.values())[row][0]["Comment"]
-                    if "Comment" in list(self.apps.values())[row][0]
-                    else ""
+                    True
+                    if list(self.apps.values())[row][0]["Terminal"] == "true"
+                    else False
                 )
-            case self.HiddenRole:
-                if "Hidden" not in list(self.apps.values())[row][0]:
-                    return False
-                else:
-                    return (
-                        True
-                        if list(self.apps.values())[row][0]["Hidden"] == "true"
-                        else False
-                    )
-            case self.NoDisplayRole:
-                if "NoDisplay" not in list(self.apps.values())[row][0]:
-                    return False
-                else:
-                    return (
-                        True
-                        if list(self.apps.values())[row][0]["NoDisplay"] == "true"
-                        else False
-                    )
-            case self.TerminalRole:
-                if "Terminal" not in list(self.apps.values())[row][0]:
-                    return False
-                else:
-                    return (
-                        True
-                        if list(self.apps.values())[row][0]["Terminal"] == "true"
-                        else False
-                    )
 
     def rowCount(self, index):
         return len(self.apps)
