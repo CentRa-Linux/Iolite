@@ -32,8 +32,13 @@ class Widget:
         if not self.component.isReady():
             for error in self.component.errors():
                 print(error.toString())
+        categoryWidth = props["categoryWidth"] if "categoryWidth" in props else 200
         self.obj = self.component.createWithInitialProperties(
-            {"parent": parent, "appModel": self.AppModel}
+            {
+                "parent": parent,
+                "appModel": self.AppModel,
+                "categoryWidth": categoryWidth,
+            }
         )
         self.obj.launch.connect(self.launch)
 

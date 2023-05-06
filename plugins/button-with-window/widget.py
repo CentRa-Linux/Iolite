@@ -54,7 +54,7 @@ class Widget:
             display.intern_atom("_NET_WM_WINDOW_TYPE"),
             Xatom.ATOM,
             32,
-            [display.intern_atom("_NET_WM_WINDOW_TYPE_DOCK")],
+            [display.intern_atom("_KDE_NET_WM_WINDOW_TYPE_APPLET_POPUP")],
             X.PropModeReplace,
         )
         display.flush()
@@ -116,6 +116,14 @@ class Widget:
             32,
             [display.intern_atom("_NET_WM_STATE_SKIP_PAGER")],
             X.PropModeAppend,
+        )
+        display.flush()
+        root.change_property(
+            display.intern_atom("_NET_ACTIVE_WINDOW"),
+            Xatom.WINDOW,
+            32,
+            [self.obj.winId()],
+            X.PropModeReplace,
         )
         display.flush()
 

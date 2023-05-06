@@ -8,6 +8,7 @@ Item {
     id: widget
 
     property var appModel
+    property int categoryWidth
 
     signal launch(string e)
 
@@ -15,42 +16,65 @@ Item {
     Layout.fillWidth: true
     height: parent.height
 
-    Flickable {
-        id: flickable
+    Row {
+        anchors.fill: parent
 
-        width: parent.width
-        height: parent.height
-        contentWidth: parent.width
-        contentHeight: grid.height
+        ScrollView {
+            id: categoryFlickable
 
-        Item {
-            id: wrapper
+            width: widget.categoryWidth
+            height: parent.height
+            contentWidth: this.width
+            contentHeight: content.height
 
-            width: Math.max(parent.width, widget.width)
-            height: Math.max(parent.height, grid.height)
+            Rectangle {
+                id: content
 
-            Grid {
-                id: grid
+                width: parent.width
+                height: grid.height
+                color: "red"
+            }
 
-                width: widget.width
+        }
 
-                Repeater {
-                    id: repeater
+        ScrollView {
+            id: flickable
 
-                    objectName: "repeater"
-                    model: widget.appModel
+            width: parent.width - widget.categoryWidth
+            height: parent.height
+            contentWidth: parent.width - widget.categoryWidth
+            contentHeight: grid.height
 
-                    Button {
-                        icon.name: Icon
-                        icon.width: Kirigami.Units.iconSizes.medium
-                        icon.height: Kirigami.Units.iconSizes.medium
-                        visible: !Hidden && !NoDisplay
-                        text: Name
-                        flat: true
-                        display: AbstractButton.TextUnderIcon
-                        width: 100
-                        height: 100
-                        onClicked: widget.launch(Exec)
+            Item {
+                id: wrapper
+
+                width: Math.max(parent.width - widget.categoryWidth, widget.width)
+                height: Math.max(parent.height, grid.height)
+
+                Grid {
+                    id: grid
+
+                    width: widget.width
+
+                    Repeater {
+                        id: repeater
+
+                        objectName: "repeater"
+                        model: widget.appModel
+
+                        Button {
+                            icon.name: Icon
+                            icon.width: Kirigami.Units.iconSizes.medium
+                            icon.height: Kirigami.Units.iconSizes.medium
+                            visible: !Hidden && !NoDisplay
+                            text: Name
+                            flat: true
+                            display: AbstractButton.TextUnderIcon
+                            width: 100
+                            height: 100
+                            onClicked: widget.launch(Exec)
+                        }
+
                     }
 
                 }

@@ -25,5 +25,6 @@
         <file>TextField.qml</file>
         <file>Tumbler.qml</file>
         <file>IconTextField.qml</file>
+        <file>AnimatedButton.qml</file>
     </qresource>
 </RCC>

@@ -135,7 +135,8 @@ class appManager:
 
         observer = Observer()
         for path in paths:
-            observer.schedule(EventHandler(), path, recursive=True)
+            if os.path.isdir(path):
+                observer.schedule(EventHandler(), path, recursive=True)
         observer.start()
         print("watchdog started!")
 

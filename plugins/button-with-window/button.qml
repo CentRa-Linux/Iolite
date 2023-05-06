@@ -5,18 +5,20 @@ import QtQuick.Window 2.14
 import org.kde.kirigami 2.15 as Kirigami
 import Apatite 1.0
 
-Button {
+AnimatedButton {
     id: root
 
     implicitWidth: 100
     implicitHeight: parent.height
     display: AbstractButton.IconOnly
     checkable: true
+    flat: true
     icon.name: ""
     onCheckedChanged: {
         if (checked) {
             window.setting = false;
             window.requestActivate();
+            window.raise();
         } else {
             window.setting = false;
         }
@@ -41,7 +43,7 @@ Button {
         property int layoutType: 0 // 0 → Row 1 → Column 2 → Grid
         property bool setting: false
 
-        //flags: Qt.FramelessWindowHint
+        flags: Qt.Tool
         x: root.checked ? sx : animation == 2 ? hx : sx
         y: root.checked ? sy : animation == 1 ? hy : sy
         color: Kirigami.Theme.backgroundColor
